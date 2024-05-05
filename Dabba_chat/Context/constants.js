@@ -1,0 +1,6 @@
+// 0x5FbDB2315678afecb367f032d93F642f64180aa3
+
+import chatAppJSON from "/Users/devchaudhari/Downloads/Dabba_chat/Context/ChatApp.json";
+export const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+export const CONTRACT_ABI = chatAppJSON.abi;
