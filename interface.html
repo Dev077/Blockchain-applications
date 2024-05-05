@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="interface.js"></script>
+
+</head>
+<body>
+    <h1>ChatApp Interface</h1>
+    <label for="walletKey">Wallet Key:</label>
+    <input type="text" id="walletKey">
+    <button onclick="login()">Login</button>
+    <br><br>
+    <label for="newUserName">New User Name:</label>
+    <input type="text" id="newUserName">
+    <label for="newWalletKey">New Wallet Key:</label>
+    <input type="text" id="newWalletKey">
+    <button onclick="createAccount()">Create Account</button>
+    <br><br>
+    <label for="friendAddress">Friend Address:</label>
+    <input type="text" id="friendAddress">
+    <label for="friendName">Friend Name:</label>
+    <input type="text" id="friendName">
+    <button onclick="addFriend()">Add Friend</button>
+    <br><br>
+    <label for="messageContent">Message Content:</label>
+    <textarea id="messageContent" rows="4" cols="50"></textarea>
+    <br><br>
+    <button onclick="sendMessage()">Send Message</button>
+    <br><br>
+    <h2>Messages:</h2>
+    <div id="messageList"></div>
+
+    <!-- Include Web3.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <script>
+        // Replace with your contract address
+        const contractAddress = '0xf8e81D47203A594245E36C48e151709F0C19fBe8';
+        // Replace with your contract ABI
+        const abi = [
+            // Paste your contract ABI here
+        ];
+        const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
+        let account;
+
+        async function login() {
+            const walletKey = document.getElementById('walletKey').value;
+            account = web3.eth.accounts.privateKeyToAccount(walletKey);
+            web3.eth.accounts.wallet.add(account);
+            alert('Logged in successfully!');
+            displayMessages();
+        }
+
+        async function createAccount() {
+            const userName = document.getElementById('newUserName').value;
+            const walletKey = document.getElementById('newWalletKey').value;
+            account = web3.eth.accounts.privateKeyToAccount(walletKey);
+            web3.eth.accounts.wallet.add(account);
+            await contract.methods.createAccount(userName).send({ from: account.address });
+            alert('Account created successfully!');
+        }
+
+        async function addFriend() {
+            const friendAddress = document.getElementById('friendAddress').value;
+            const friendName = document.getElementById('friendName').value;
+            await contract.methods.addFriend(friendAddress, friendName).send({ from: account.address });
+            alert('Friend added successfully!');
+        }
+
+        async function sendMessage() {
+            const messageContent = document.getElementById('messageContent').value;
+            await contract.methods.sendMessage(messageContent).send({ from: account.address });
+            alert('Message sent successfully!');
+        }
+
+        async function displayMessages() {
+            const messages = await contract.methods.getMessages().call();
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = '';
+            messages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `${message.sender}: ${message.content}`;
+                messageList.appendChild(messageElement);
+            });
+        }
+
+        // Call displayMessages function when the page loads
+        window.addEventListener('load', () => {
+            if (web3.currentProvider) {
+                web3.eth.getAccounts((err, accs) => {
+                    if (err) {
+                        console.error('Error fetching accounts:', err);
+                        return;
+                    }
+                    if (accs.length === 0) {
+                        console.error('No accounts found.');
+                        return;
+                    }
+                    account = accs[0];
+                    displayMessages();
+                });
+            } else {
+                console.error('No web3 provider found.');
+            }
+        });
+    </script>
+</body>
+</html>
