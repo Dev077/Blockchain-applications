@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp UI</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>ChatApp</h1>
+    
+    <!-- Account Creation Section -->
+    <div id="createAccount">
+        <h2>Create Account</h2>
+        <input type="text" id="newUserName" placeholder="Enter your name">
+        <button onclick="createAccount()">Create Account</button>
+    </div>
+
+    <!-- Add Friend Section -->
+    <div id="addFriend">
+        <h2>Add Friend</h2>
+        <input type="text" id="friendAddress" placeholder="Enter friend's address">
+        <input type="text" id="friendName" placeholder="Enter friend's name">
+        <button onclick="addFriend()">Add Friend</button>
+    </div>
+
+    <!-- Send Message Section -->
+    <div id="sendMessage">
+        <h2>Send Message</h2>
+        <input type="text" id="messageContent" placeholder="Enter message">
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
+
+    <!-- Display Messages Section -->
+    <div id="displayMessages">
+        <h2>Messages</h2>
+        <div id="messageList">
+            <!-- Messages will be displayed here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
